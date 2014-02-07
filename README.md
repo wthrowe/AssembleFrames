@@ -39,8 +39,9 @@ Here, `<input_filenames>...` is a list of image files that should be assembled
 (in order) into a video.  The video file will be written to
 `<output_prefix>.mp4`, and the framerate will be `<fps>` frames per second.
 
-Currently, encoder options are hard-coded in `AssembleFrames.java` and may
-require modification to best meet your needs.
+Build-time encoder options are specified in `application.conf` and may be
+overridden at runtime by defining the corresponding properties for the JVM with
+command line flags of the form `-Dcdmuhlb.assembleframes.<property>=<value>`.
 
 Technical details
 -----------------
@@ -48,8 +49,8 @@ Technical details
 Chroma subsampling is performed using the following filtering and interpolation
 kernel coefficients:
 
-    | 0.125 | 0.25  | 0.125 |
-    | 0.125 | 0.25  | 0.125 |
+    0.125 0.25 0.125
+    0.125 0.25 0.125
 
 Reflective boundary conditions are assumed for the first column (that is, when
 subsampling in column 0, column -1 is assumed to be equal to column 1).

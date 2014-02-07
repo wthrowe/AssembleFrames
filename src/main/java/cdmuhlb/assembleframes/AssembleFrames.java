@@ -3,11 +3,15 @@ package cdmuhlb.assembleframes;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 
 public class AssembleFrames {
   public static void main(final String[] args) throws IOException {
     if (args.length < 1) {
-      System.err.println("Usage: java -jar assembleframes-<version>.jar <output_prefix> <fps> <input_filename>...");
+      System.err.println("Usage:");
+      System.err.println("java -jar assembleframes-<version>.jar " +
+          "<output_prefix> <fps> <input_filename>...");
       System.exit(1);
     }
 
@@ -28,15 +32,26 @@ public class AssembleFrames {
           ") of <input_filename>=" + args[2] + " must be even");
       System.exit(1);
     }
+
+    final Config conf = ConfigFactory.load().getConfig(
+        "cdmuhlb.assembleframes");
+    final String x264Crf = conf.getString("crf");
+    final String x264Tune = conf.getString("tune");
+    final String x264Profile = conf.getString("profile");
+    final double x264KeyintSeconds = conf.getDouble("keyint-seconds");
+
     //final H264Level level = H264Level.findLevel(width, height, fps);
     final H264Level level = H264Level.LEVEL_4_1;
 
-    ProcessBuilder pb = new ProcessBuilder("x264", "--crf", "13",
-        "--preset", "veryslow", "--tune", "animation",
-        "--fps", Integer.toString(fps), "--keyint", Integer.toString(fps),
-        "--profile", "high", "--level", level.getLevel(),
-        "--vbv-maxrate", Integer.toString(level.getMaxBitrateHigh()),
-        "--vbv-bufsize", Integer.toString(level.getMaxBitrateHigh()),
+    ProcessBuilder pb = new ProcessBuilder("x264", "--crf", x264Crf,
+        "--preset", "veryslow", "--tune", x264Tune,
+        "--fps", Integer.toString(fps),
+        "--keyint", Long.toString(Math.round(x264KeyintSeconds*fps)),
+        "--profile", x264Profile, "--level", level.getLevel(),
+        "--vbv-maxrate", Integer.toString((x264Profile == "high") ?
+            level.getMaxBitrateHigh() : level.getMaxBitrate()),
+        "--vbv-bufsize", Integer.toString((x264Profile == "high") ?
+            level.getMaxBitrateHigh() : level.getMaxBitrate()),
         "--non-deterministic",
         //"--quiet", "--no-progress",
         "--sar", "1:1", "--overscan", "show",
