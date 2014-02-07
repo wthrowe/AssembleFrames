@@ -22,24 +22,25 @@ later) JVM to run.  Video encoding additionally requires that
 [x264](http://www.videolan.org/developers/x264.html) be installed and visible
 in your `$PATH`.
 
-Building _AssembleFrames_ requires a Java SE 7 (or later) JDK.  Building with
-[SBT](http://www.scala-sbt.org/) requires an `sbt` launcher compatible with
-version 0.13.1.
+Building _AssembleFrames_ requires a Java SE 7 (or later) JDK and an
+[SBT](http://www.scala-sbt.org/) launcher compatible with version 0.13.1.
 
 Usage
 -----
 
-To compile _AssembleFrames_ using SBT, simply execute `sbt package`.  This will
-produce a JAR file at `target/assembleframes-<version>.jar`.  To run
-_AssembleFrames_, execute a command like the following:
+To create an `assembleframes` executable, simply execute
+`sbt universal:package-bin`.  This will produce a ZIP file at
+`target/universal/assembleframes-<version>.zip`.  To run
+_AssembleFrames_, unzip this archive, add its `bin` subdirectory to your
+`$PATH`, and execute a command of the following form:
 
-    java -jar assembleframes-<version>.jar <output_prefix> <fps> <input_filename>...
+    assembleframes <output_prefix> <fps> <input_filename>...
 
 Here, `<input_filenames>...` is a list of image files that should be assembled
-(in order) into a video.  The video file will be written to
+(in the order listed) into a video.  The video file will be written to
 `<output_prefix>.mp4`, and the framerate will be `<fps>` frames per second.
 
-Build-time encoder options are specified in `application.conf` and may be
+Build-time encoder options are specified in `application.conf`.  These may be
 overridden at runtime by defining the corresponding properties for the JVM with
 command line flags of the form `-Dcdmuhlb.assembleframes.<property>=<value>`.
 
@@ -54,3 +55,9 @@ kernel coefficients:
 
 Reflective boundary conditions are assumed for the first column (that is, when
 subsampling in column 0, column -1 is assumed to be equal to column 1).
+
+Performance notes
+-----------------
+
+Performance is currently limited by Java's Image I/O library, which is very slow
+at both reading a PNG file and filling an array with its pixel data.

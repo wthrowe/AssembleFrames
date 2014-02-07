@@ -9,9 +9,8 @@ import com.typesafe.config.ConfigFactory;
 public class AssembleFrames {
   public static void main(final String[] args) throws IOException {
     if (args.length < 1) {
-      System.err.println("Usage:");
-      System.err.println("java -jar assembleframes-<version>.jar " +
-          "<output_prefix> <fps> <input_filename>...");
+      System.err.println("Usage: assembleframes <output_prefix> <fps> " +
+          "<input_filename>...");
       System.exit(1);
     }
 
