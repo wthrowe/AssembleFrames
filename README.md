@@ -51,5 +51,5 @@ kernel coefficients:
     | 0.125 | 0.25  | 0.125 |
     | 0.125 | 0.25  | 0.125 |
 
-Reflective boundary conditions are assumed for the first column (even about the
-first column).
+Reflective boundary conditions are assumed for the first column (that is, when
+subsampling in column 0, column -1 is assumed to be equal to column 1).
