@@ -22,27 +22,20 @@ later) JVM to run.  Video encoding additionally requires that
 [x264](http://www.videolan.org/developers/x264.html) be installed and visible
 in your `$PATH`.
 
-Building _AssembleFrames_ requires a Java SE 7 (or later) JDK and an
-[SBT](http://www.scala-sbt.org/) launcher compatible with version 0.13.1.
+Building _AssembleFrames_ requires a Java SE 7 (or later) JDK.
 
 Usage
 -----
 
-To create an `assembleframes` executable, simply execute
-`sbt universal:package-bin`.  This will produce a ZIP file at
-`target/universal/assembleframes-<version>.zip`.  To run
-_AssembleFrames_, unzip this archive, add its `bin` subdirectory to your
-`$PATH`, and execute a command of the following form:
+To create an `assembleframes` executable jar, simply execute `make`.
+This will produce an assembleframes.jar file in the 'build' directory.
+It can then be run as
 
-    assembleframes <output_prefix> <fps> <input_filename>...
+    java -jar build/assembleframes <output_prefix> <fps> <input_filename>...
 
 Here, `<input_filenames>...` is a list of image files that should be assembled
 (in the order listed) into a video.  The video file will be written to
 `<output_prefix>.mp4`, and the framerate will be `<fps>` frames per second.
-
-Build-time encoder options are specified in `application.conf`.  These may be
-overridden at runtime by defining the corresponding properties for the JVM with
-command line flags of the form `-Dcdmuhlb.assembleframes.<property>=<value>`.
 
 Technical details
 -----------------
