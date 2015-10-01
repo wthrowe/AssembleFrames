@@ -3,8 +3,6 @@ package cdmuhlb.assembleframes;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 
 public class AssembleFrames {
   public static void main(final String[] args) throws IOException {
@@ -32,12 +30,10 @@ public class AssembleFrames {
       System.exit(1);
     }
 
-    final Config conf = ConfigFactory.load().getConfig(
-        "cdmuhlb.assembleframes");
-    final String x264Crf = conf.getString("crf");
-    final String x264Tune = conf.getString("tune");
-    final String x264Profile = conf.getString("profile");
-    final double x264KeyintSeconds = conf.getDouble("keyint-seconds");
+    final String x264Crf = "13";
+    final String x264Tune = "animation";
+    final String x264Profile = "high";
+    final double x264KeyintSeconds = 1;
 
     //final H264Level level = H264Level.findLevel(width, height, fps);
     final H264Level level = H264Level.LEVEL_4_1;
